@@ -1,8 +1,6 @@
 package Windows;
 import javax.swing.*;
-
-import Database.Connect;
-
+import Database.MySql;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,22 +14,25 @@ public class LoginWindow extends JFrame implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Container container = getContentPane();
-    JLabel userLabel = new JLabel("USERNAME");
-    JLabel passwordLabel = new JLabel("PASSWORD");
-    JTextField userTextField = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
-    JButton loginButton = new JButton("LOGIN");
-    JButton resetButton = new JButton("RESET");
-    JCheckBox showPassword = new JCheckBox("Show Password");
-
-
-    LoginWindow() {
+	private Container container = getContentPane();
+	private JLabel loginStatusLabel = new JLabel("");
+	private JLabel userLabel = new JLabel("USERNAME");
+	private JLabel passwordLabel = new JLabel("PASSWORD");
+	private JTextField userTextField = new JTextField();
+	private JPasswordField passwordField = new JPasswordField();
+	private JButton loginButton = new JButton("LOGIN");
+	private JButton resetButton = new JButton("RESET");
+	private JCheckBox showPassword = new JCheckBox("Show Password");
+	public String loginMessageFailed = "Invalid Username or Password!!!";
+	public JOptionPane loginStatus = new JOptionPane();
+	JDialog dialog;
+    public LoginWindow() {
     	setTitle("Login");
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
         addActionEvent();
+        SetComponentNames();
 
     }
 
@@ -52,7 +53,8 @@ public class LoginWindow extends JFrame implements ActionListener {
     }
 
     public void addComponentsToContainer() {
-        container.add(userLabel);
+        container.add(loginStatusLabel);
+    	container.add(userLabel);
         container.add(passwordLabel);
         container.add(userTextField);
         container.add(passwordField);
@@ -78,14 +80,23 @@ public class LoginWindow extends JFrame implements ActionListener {
             userText = userTextField.getText();
             pwdText = passwordField.getText();
             
-            try {
-				 Connect.UpdateUser(userText,pwdText);
-				 JOptionPane.showMessageDialog(this, "Welcome "+userText);
+            try { 
+   
+            	  boolean c = MySql.LoginUser(userText,pwdText);  
+				  if( c == true)
+				  {
+					  MySql.UpdateUser(userText, pwdText);
+					  CloseDialog( "Welcome "+userText);					  
+				  }
+				  else
+				  {
+					  CloseDialog(loginMessageFailed);
+				  }
+
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-
         }
         if (e.getSource() == resetButton) {
             userTextField.setText("");
@@ -97,9 +108,39 @@ public class LoginWindow extends JFrame implements ActionListener {
             } else {
                 passwordField.setEchoChar('*');
             }
-
-
         }
+ 
+    }
+    
+    private void SetComponentNames()
+    {
+	  userLabel.setName("labelUsername"); 
+	  passwordLabel.setName("labelPassword");
+	  userTextField.setName("userTexfield"); 
+	  passwordField.setName("passwortTextField"); 
+	  loginButton.setName("loginButton"); 
+	  resetButton.setName("resetButton"); 
+	  showPassword.setName("showPasswordCheckbox");
+	  loginStatus.setName("loginStatus");
+	  loginStatusLabel.setName("loginStatusLabel");	  
     }
 
+    public void CloseDialog(String message)
+    {
+        final JOptionPane pane = new JOptionPane(message, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        final JDialog dialog = pane.createDialog(null, "Hello world");
+        Timer timer = new Timer(1000, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                dialog.dispose();
+            }
+
+        });
+        timer.start();
+        dialog.setVisible(true);        
+        Integer choice = (Integer) (pane.getValue() == JOptionPane.UNINITIALIZED_VALUE ? JOptionPane.OK_OPTION : pane.getValue());        
+        loginStatusLabel.setText(message);
+        dialog.dispose();        
+    }
 }

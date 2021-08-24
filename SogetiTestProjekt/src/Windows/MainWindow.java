@@ -4,20 +4,18 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-
-import Database.Connect;
+import Database.MySql;
 import net.proteanit.sql.DbUtils;
 public class MainWindow extends JFrame implements ActionListener{
 
+	public static String mavenPath="C:\\Users\\mvasic\\git\\Sogeti\\SogetiTestProjekt\\rs2xml.jar";
 	/**
 	 * 
 	 */
@@ -69,7 +67,13 @@ public class MainWindow extends JFrame implements ActionListener{
     	{
     		table = new JTable();    		
     	}
-    	ResultSet rs =Connect.SelectUser();  	
+    	ResultSet rs = null;
+		try {
+			rs = MySql.SelectAllOnlineUser();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  	
     	if(rs != null)
     	{
     		table.setModel(DbUtils.resultSetToTableModel(rs));    		

@@ -1,8 +1,6 @@
 package Windows;
 import javax.swing.*;
-
-import Database.Connect;
-
+import Database.MySql;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -78,7 +76,7 @@ public class RegisterWindow extends JFrame implements ActionListener {
             userText = userTextField.getText();
             pwdText = passwordField.getText();
             try {
-            	Connect.AddUser(userText, pwdText);
+            	MySql.AddUser(userText, pwdText);
             	JOptionPane.showMessageDialog(this, "Welcome to Sogeti!");
             }
             catch(Exception ex) {
