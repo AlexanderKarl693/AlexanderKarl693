@@ -1,4 +1,5 @@
 package Windows;
+
 import javax.swing.*;
 import Database.MySql;
 import java.awt.*;
@@ -16,6 +17,8 @@ public class RegisterWindow extends JFrame implements ActionListener {
     JButton registerButton = new JButton("SAVE");
     JButton resetButton = new JButton("RESET");
     JCheckBox showPassword = new JCheckBox("Show Password");
+    private final JTextField ageTextField = new JTextField("");
+    private final JLabel lblAge = new JLabel("AGE");
 
     /***********************************************************
      * Konstructor                                   		   *
@@ -34,15 +37,15 @@ public class RegisterWindow extends JFrame implements ActionListener {
     }
 
     public void setLocationAndSize() {
+    	ageTextField.setBounds(150, 297, 150, 30);
+    	ageTextField.setColumns(10);
         userLabel.setBounds(50, 150, 100, 30);
-        passwordLabel.setBounds(50, 220, 100, 30);
+        passwordLabel.setBounds(50, 225, 100, 30);
         userTextField.setBounds(150, 150, 150, 30);
-        passwordField.setBounds(150, 220, 150, 30);
-        showPassword.setBounds(150, 250, 150, 30);
-        registerButton.setBounds(50, 300, 100, 30);
-        resetButton.setBounds(200, 300, 100, 30);
-
-
+        passwordField.setBounds(150, 225, 150, 30);
+        showPassword.setBounds(150, 255, 150, 30);
+        registerButton.setBounds(50, 379, 100, 30);
+        resetButton.setBounds(200, 379, 100, 30);
     }
 
     public void addComponentsToContainer() {
@@ -53,6 +56,12 @@ public class RegisterWindow extends JFrame implements ActionListener {
         container.add(showPassword);
         container.add(registerButton);
         container.add(resetButton);
+        container.add(ageTextField);
+        lblAge.setFont(new Font("Tahoma", Font.BOLD, 12));
+        lblAge.setBounds(50, 305, 45, 13);
+        
+        getContentPane().add(lblAge);
+                
     }
 
     /***********************************************************
@@ -73,11 +82,19 @@ public class RegisterWindow extends JFrame implements ActionListener {
         if (e.getSource() == registerButton) {
             String userText;
             String pwdText;
+            int age;
             userText = userTextField.getText();
             pwdText = passwordField.getText();
+            age = Integer.parseInt(ageTextField.getText());
             try {
-            	MySql.AddUser(userText, pwdText);
-            	JOptionPane.showMessageDialog(this, "Welcome to Sogeti!");
+            	if( age > 15)
+            	{
+                	MySql.AddUser(userText, pwdText);
+                	JOptionPane.showMessageDialog(this, "Welcome to Sogeti!");            		
+            	}
+            	else {
+            		JOptionPane.showMessageDialog(this, "Registration requires a minimum age of 16!");
+            	}
             }
             catch(Exception ex) {
                 JOptionPane.showMessageDialog(this, "Invalid Username or Password");
@@ -96,5 +113,4 @@ public class RegisterWindow extends JFrame implements ActionListener {
             }
         }
     }
-
 }

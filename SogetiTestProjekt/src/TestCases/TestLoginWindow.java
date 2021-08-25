@@ -1,46 +1,18 @@
 package TestCases;
-
-import static org.junit.jupiter.api.Assertions.*;
-
+import Windows.LoginWindow;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Window;
-
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JMenu;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.*;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import Windows.LoginWindow;
+
 
 class TestLoginWindow {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
-
-	
 
 	public static int counter = 0;
 	public static Component getChildNamed(Component parent,String name) {
@@ -126,10 +98,10 @@ class TestLoginWindow {
 		JTextField userPasswordTextField = (JTextField)getComponent(container, "passwortTextField");
 		JButton loginButton = (JButton)getComponent(container, "loginButton");
 		sleep(1);
-		userNameTextField.setText("y");
-		sleep(1);
-		userPasswordTextField.setText("y");
-		sleep(1);
+		userNameTextField.setText("yyyyyyyyy");
+		sleep(3);
+		userPasswordTextField.setText("yyyyyyyyyy");
+		sleep(3);
 		loginButton.doClick();	
 		String loginMessage = loginStatusLabel.getText();
 		Assertions.assertEquals(window.loginMessageFailed, loginMessage);

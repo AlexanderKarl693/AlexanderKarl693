@@ -4,9 +4,6 @@ import Database.MySql;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class LoginWindow extends JFrame implements ActionListener {
 
